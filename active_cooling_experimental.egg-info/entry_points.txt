@@ -1,0 +1,3 @@
+[console_scripts]
+active-cooling-experiment = source.main:Application.run
+active-cooling-experiment-test = source.main:Application.run_test

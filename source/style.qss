@@ -1,0 +1,185 @@
+/* Copyright 2024-2025, the Active Cooling Experimental Application Authors
+
+Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+
+1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+
+2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
+
+3. Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS “AS IS” AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.*/
+
+/* General settings */
+QWidget {
+    background-color: #f4f4f4;
+    color: #2e2e2e;
+    font-family: 'Roboto', sans-serif;
+    font-size: 12px;
+}
+
+/* Buttons */
+QPushButton {
+    background-color: #003B5C; 
+    color: white;
+    border: 1px solid #002B4C;
+    padding: 6px 4px;
+    border-radius: 4px;
+}
+
+QPushButton:hover {
+    background-color: #002B4C;
+}
+
+QPushButton:pressed {
+    background-color: #003B5C;
+}
+
+/* Text fields */
+QLineEdit, QTextEdit {
+    background-color: #ffffff;
+    border: 1px solid #cccccc;
+    padding: 3px;
+    border-radius: 3px;
+    color: #333333;
+}
+
+QLineEdit:disabled, QTextEdit:disabled
+{
+    background-color: #A4C8E1;
+    border: 1px solid #cccccc;
+    padding: 3px;
+    border-radius: 3px;
+    color: #333333;
+}
+
+QLineEdit:focus, QTextEdit:focus {
+    border-color: #002B4C;
+    outline: none;
+}
+
+/* Labels */
+QLabel {
+    font-size: 12px;
+    font-weight: bold;
+    color: #2e2e2e;
+}
+
+/* ComboBox */
+QComboBox {
+    background-color: #FFFFFF;  /* Background color */
+    border: 1px solid #003B5C;  /* NRC Blue border */
+    padding: 1px;               /* Padding inside the combo box */
+}
+
+QComboBox::drop-down {
+    width: 20px;                /* Width of the drop-down arrow */
+    border-left: 1px solid #003B5C;  /* Border on the left of the arrow */
+}
+
+QComboBox::down-arrow {
+    image: url(arrow.png);
+    width: 12px;                /* Width of the arrow */
+    height: 12px;               /* Height of the arrow */
+}
+
+QComboBox::drop-down:hover {
+    background-color: #A4C8E1;  /* Light Blue background on hover */
+}
+
+QComboBox::item {
+    background-color: #FFFFFF;  /* Background color for items */
+    color: #003B5C;              /* Text color for items */
+}
+
+QComboBox::item:selected {
+    background-color: #A4C8E1;  /* Background color for selected item */
+    color: #003B5C;              /* Text color for selected item */
+}
+
+/* ScrollBars */
+QScrollArea {
+    border: 1px solid #003B5C;  /* NRC blue border */
+}
+
+QScrollBar:vertical {
+    border: none;
+    background-color: #f4f4f4; /* Matches general background */
+    width: 15px; /* Increased width for better usability */
+    margin: 22px 0; /* Spacing for arrows */
+}
+
+QScrollBar::handle:vertical {
+    background-color: #002B4C;
+    border-radius: 5px;
+}
+
+QScrollBar::handle:vertical:hover {
+    background-color: #002B4C;
+}
+
+QScrollBar::add-line:vertical {
+    background: #00539f; /* Color for the down arrow area */
+    height: 20px; /* Height of the down arrow button */
+    subcontrol-position: bottom; /* Position at the bottom */
+    subcontrol-origin: margin; /* Origin at the margin */
+}
+
+QScrollBar::sub-line:vertical {
+    background: #00539f; /* Color for the up arrow area */
+    height: 20px; /* Height of the up arrow button */
+    subcontrol-position: top; /* Position at the top */
+    subcontrol-origin: margin; /* Origin at the margin */
+}
+
+QScrollBar::up-arrow:vertical, 
+QScrollBar::down-arrow:vertical {
+    background: #00539f; /* Arrow button background color */
+    width: 15px; /* Width of the arrow */
+    height: 15px; /* Height of the arrow */
+}
+
+/* ToolTip */
+QToolTip {
+    background-color: #002B4C;
+    color: white;
+    border: 1px solid #333333;
+    padding: 4px;
+    border-radius: 4px;
+}
+
+/* Tabs */
+QTabWidget::pane {
+    border: 1px solid #cccccc;
+}
+
+QTabBar::tab {
+    background: #e0e0e0;
+    padding: 4px;
+    border-radius: 4px;
+}
+
+QTabBar::tab:selected {
+    background: #002B4C;
+    color: white;
+}
+
+/* Progress Bar */
+QProgressBar {
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    background-color: #e0e0e0;
+}
+
+QProgressBar::chunk {
+    background-color: #002B4C;
+    width: 20px;
+}
+
+
+FigureCanvas
+{
+     border: 1px solid #002B4C;
+    border-radius: 4px;
+    background-color: #e0e0e0;   
+}

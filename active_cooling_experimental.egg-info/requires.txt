@@ -1,0 +1,6 @@
+PySide6
+adafruit-circuitpython-dacx578
+adafruit-circuitpython-mlx90640
+adafruit-circuitpython-tla202x
+matplotlib
+numpy
