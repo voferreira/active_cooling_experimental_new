@@ -30,7 +30,6 @@ class MFC():
 		
 		import board
 		import busio
-		import RPi.GPIO as GPIO
 
 		i2c = busio.I2C(board.SCL, board.SDA)
 			

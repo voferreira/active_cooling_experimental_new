@@ -29,16 +29,8 @@ class Solenoid:
         import RPi.GPIO as GPIO
         from source.DRV8806 import DRV8806
 
-        self.DRV = [DRV8806(0, 0), DRV8806(0, 1), DRV8806(10, 0)]
-    
-    def set_solenoid(self, solenoid_number, on=False):
-        if 0 <= solenoid_number <= 3:
-            self.DRV[0].set_output(solenoid_number, on)
-        elif 4 <= solenoid_number <= 7:
-            self.DRV[1].set_output(solenoid_number - 4, on)
-        elif 8 <= solenoid_number <= 11:
-            self.DRV[2].set_output(solenoid_number - 8, on)
-        else:
-            raise ValueError("Solenoid number must be between 0 and 11")
+        self.DRV = DRV8806()
+
+        
 
 

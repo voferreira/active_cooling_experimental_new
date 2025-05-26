@@ -11,27 +11,32 @@ Redistribution and use in source and binary forms, with or without modification,
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS “AS IS” AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 '''
+import numpy as np
+import board
+import spidev
+import digitalio
 
 class DRV8806:
-    def __init__(self, bus, device):
-        import spidev
+
+    def __init__(self):
+        '''Driver for DRV'''
+        
         self.spi = spidev.SpiDev()
-        self.spi.open(bus, device)
-        self.spi.max_speed_hz = 50000
-        self.spi.mode = 0b00
-        self.state = 0x00  # Current 8-bit state
+        self.spi.open(10, 0)
+        self.spi.mode = 0
+        to_send = [0x01, 0x02, 0x03]
+        self.spi.xfer(to_send)
+        print(self.spi.readbytes(1))
+        
+        self.port_states = np.zeros(4)
 
-    def set_output(self, bit_index, on=False):
-        """Set one of the 4 output bits (0-3) ON or OFF."""
-        if on:
-            self.state |= (1 << bit_index)
-        else:
-            self.state &= ~(1 << bit_index)
-        self._write_state()
+    def set_off(self):
+        LOW = 0
+        GPIO.output(board.SCK, LOW)
+        GPIO.output(board.MISO, LOW)
+        GPIO.output(board.MOSI, LOW)
+        GPIO.output(board.CS, LOW)
 
-    def clear_all(self):
-        self.state = 0x00
-        self._write_state()
+        print(board.CS)
+        
 
-    def _write_state(self):
-        self.spi.writebytes([self.state])
