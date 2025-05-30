@@ -25,27 +25,31 @@ class MFC():
 		if test_UI:
 			return
 
-		from adafruit_tla202x import TLA2024
+		from source.TLA2825IRTER import TLA2528
 		from adafruit_dacx578 import DACx578
-		
+
 		import board
 		import busio
 
 		i2c = busio.I2C(board.SCL, board.SDA)
 			
-		self.ADC = [TLA2024(i2c, address=0x12), TLA2024(i2c, address=0x13)]
+		self.ADC = [TLA2528(address=0x12), TLA2528(address=0x13)]
 		self.ADC_analog = np.zeros(n_region)
+		self.n_region = n_region
 	
 		self.DAC = [DACx578(i2c, address=0x48)]
+
+		self.zero_flow()
 	
 	def get_analog_read(self):
 		if self.test_UI:
 			return
-		for i in range(self.ADC_analog.shape[0]):
-			if i < 8:
-				self.ADC_analog[i] = self.ADC[0].read(i)
-			else:
-				self.ADC_analog[i] = self.ADC[1].read(i - 8)
+
+		n_measurements_per_adc = min(self.n_region, 8)
+		
+		self.ADC_analog[:n_measurements_per_adc] = self.ADC[0].measure_voltage()[:n_measurements_per_adc]
+		if self.n_region > 8:
+			self.ADC_analog[8:] = self.ADC[1].measure_voltage()[8:]
 
 	def get_flow_rate(self):
 		if self.test_UI:
@@ -68,13 +72,21 @@ class MFC():
 		if((analog_input <= 5.) and (analog_input > 1.)):
 			self.flow_rate_setpoint[region] = (analog_input - 1.) * 75.
 		elif analog_input > 5.:
-			self.flow_rate_setpoint[region] = 5.
+			self.flow_rate_setpoint[region] = (5 - 1.) * 75.
 			analog_input = 5.
 		else:
 			self.flow_rate_setpoint[region] = 0.
 			analog_input = 0.
 
+		# Clip minimum analog input
+		analog_input = max(0.01, analog_input)
+
 		if region < 8:
-			self.DAC[0].channels[region].normalized_value = analog_input / 5.
+			self.DAC[0].channels[region].normalized_value = analog_input / 5.5
 		else:
-			self.DAC[1].channels[region - 8].normalized_value = analog_input / 5.
+			self.DAC[1].channels[region - 8].normalized_value = analog_input / 5.5
+
+	def zero_flow(self):
+		for dac in self.DAC:
+			for i in dac.channels:
+				i.normalized_value = 0.01

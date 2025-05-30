@@ -1,6 +1,6 @@
 import unittest
 from unittest.mock import patch, MagicMock
-from DRV8806_driver import DRV8806
+from source.DRV8806 import DRV8806
 import time
 
 drv = DRV8806(latch_pin = 10, reset_pin = 5)

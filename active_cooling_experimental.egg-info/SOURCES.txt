@@ -7,6 +7,7 @@ active_cooling_experimental.egg-info/entry_points.txt
 active_cooling_experimental.egg-info/requires.txt
 active_cooling_experimental.egg-info/top_level.txt
 source/DRV8806.py
+source/TLA2825IRTER.py
 source/UI.py
 source/__init__.py
 source/decouplers.py

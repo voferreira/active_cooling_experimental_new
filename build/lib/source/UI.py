@@ -182,7 +182,7 @@ class UI(QWidget):
             self.solenoid_checkbox.append(QCheckBox(str(i), self))
 
             # Connect checkbox to function
-            self.solenoid_checkbox[i].checkStateChanged.connect(self.toggle_solenoid_checkbox)
+            self.solenoid_checkbox[i].checkStateChanged.connect(lambda: self.toggle_solenoid_checkbox(i))
 
             solenoid_selector.addWidget(self.solenoid_checkbox[i])
         
@@ -676,10 +676,9 @@ class UI(QWidget):
             else:
                 self.create_mfc_section()
 
-    def toggle_solenoid_checkbox(self):
+    def toggle_solenoid_checkbox(self, solenoid_id):
         '''Triggers solenoid state switch'''
-        for i in range(self.n_region):
-            self.solenoid.set_solenoid(i, self.solenoid_checkbox[i].isChecked())
+        self.solenoid.set_solenoid_state(solenoid_id, self.solenoid_checkbox[solenoid_id].isChecked())
 
 
     def create_scheduler_section(self):

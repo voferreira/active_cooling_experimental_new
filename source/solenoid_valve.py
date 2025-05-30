@@ -19,18 +19,26 @@ class Solenoid:
     def __init__(self, n_region, test_UI = False):
 
         self.test_UI = test_UI
-        self.state = np.zeros(n_region)
-        self.state = self.state.astype(bool)
+        self.state = [0b00000000, 0b00000000]
 
         if test_UI:
             return
 
-        import board
         import RPi.GPIO as GPIO
         from source.DRV8806 import DRV8806
 
         self.DRV = DRV8806()
-
+    
+    def set_solenoid_state(self, solenoid_id, new_state: bool):
         
+        byte_index = solenoid_id // 8
+        bit_in_byte = solenoid_id % 8
 
+        if new_state == True:
+            self.state[byte_index] |= (1 << bit_in_byte)
+
+        elif new_state == False:
+            self.state[byte_index] &= ~(1 << bit_in_byte)
+
+        self.DRV.spi.writebytes(self.state)
 

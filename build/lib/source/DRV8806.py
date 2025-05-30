@@ -11,32 +11,36 @@ Redistribution and use in source and binary forms, with or without modification,
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS “AS IS” AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 '''
-import numpy as np
-import board
+
+import RPi.GPIO as GPIO
 import spidev
-import digitalio
+import time
 
 class DRV8806:
+    def __init__(self, bus = 0, device = 0, latch = 11, srclr = 13, reset = 29):
+ 
+        self.latch = latch
+        self.srclr = srclr
+        self.reset = reset
 
-    def __init__(self):
-        '''Driver for DRV'''
-        
+        GPIO.setmode(GPIO.BOARD)
+
+        GPIO.setup(self.latch, GPIO.OUT)
+        GPIO.setup(self.srclr, GPIO.OUT)
+        GPIO.setup(self.reset, GPIO.OUT)
+
+
+        GPIO.output(self.latch, GPIO.HIGH)
+        GPIO.output(self.srclr, GPIO.HIGH)
+        GPIO.output(self.reset, GPIO.LOW)
+
         self.spi = spidev.SpiDev()
-        self.spi.open(10, 0)
-        self.spi.mode = 0
-        to_send = [0x01, 0x02, 0x03]
-        self.spi.xfer(to_send)
-        print(self.spi.readbytes(1))
-        
-        self.port_states = np.zeros(4)
+        self.spi.open(bus, device)
 
-    def set_off(self):
-        LOW = 0
-        GPIO.output(board.SCK, LOW)
-        GPIO.output(board.MISO, LOW)
-        GPIO.output(board.MOSI, LOW)
-        GPIO.output(board.CS, LOW)
+        self.spi.max_speed_hz = 100000
+        self.spi.mode = 0b00
 
-        print(board.CS)
-        
-
+    def reset_driver(self):
+        GPIO.output(self.reset, GPIO.HIGH)
+        time.sleep(0.1)
+        GPIO.output(self.reset, GPIO.LOw)

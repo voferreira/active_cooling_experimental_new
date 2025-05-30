@@ -25,7 +25,7 @@ class MFC():
 		if test_UI:
 			return
 
-		from adafruit_tla202x import TLA2024
+		from source.TLA2825IRTER import TLA2825IRTER
 		from adafruit_dacx578 import DACx578
 		
 		import board
@@ -33,7 +33,7 @@ class MFC():
 
 		i2c = busio.I2C(board.SCL, board.SDA)
 			
-		self.ADC = [TLA2024(i2c, address=0x12), TLA2024(i2c, address=0x13)]
+		self.ADC = [TLA2825IRTER(i2c, address=0x12), TLA2825IRTER(i2c, address=0x13)]
 		self.ADC_analog = np.zeros(n_region)
 	
 		self.DAC = [DACx578(i2c, address=0x48)]
@@ -42,6 +42,7 @@ class MFC():
 		if self.test_UI:
 			return
 		for i in range(self.ADC_analog.shape[0]):
+			print(i)
 			if i < 8:
 				self.ADC_analog[i] = self.ADC[0].read(i)
 			else:
