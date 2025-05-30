@@ -36,17 +36,21 @@ class MFC():
 		self.ADC = [TLA2528(address=0x12), TLA2528(address=0x13)]
 		self.ADC_analog = np.zeros(n_region)
 	
-		self.DAC = [DACx578(i2c, address=0x48), DACx578(i2c, address=0x49)]
+		self.DAC = [DACx578(i2c, address=0x48), DACx578(i2c, address=0x47)]
 
 		self.n_region = n_region
 		self.flow_rate = np.zeros(n_region)
+
+		self.dac_region_mask = {0 : 0, 1 : 5, 2 : 1, 3 : 6, 
+							 4 : 2, 5 : 7, 6 : 3, 7 : 8,
+							 8 : 4, 9 : 9}
 	
 	def get_analog_read(self):
 		if self.test_UI:
 			return
 		
 		n_points_ADC0 = min(8, self.n_region)
-		self.ADC_analog[:n_points_ADC0] = self.ADC[0].measure_voltage()
+		self.ADC_analog[:n_points_ADC0] = self.ADC[0].measure_voltage()[:n_points_ADC0]
 		if self.n_region > 8:
 			self.ADC_analog[n_points_ADC0:10] = self.ADC[1].measure_voltage()[:2]
 
@@ -66,6 +70,8 @@ class MFC():
 	def set_flow_rate(self, region, flow_rate):
 		if self.test_UI:
 			return
+		
+		region = self.dac_region_mask[region]
 		flow_rate = max(0., flow_rate)
 		analog_input = flow_rate/75. + 1.
 		if((analog_input <= 5.) and (analog_input > 1.)):
@@ -80,4 +86,4 @@ class MFC():
 		if region < 8:
 			self.DAC[0].channels[region].normalized_value = analog_input / 5.
 		else:
-			self.DAC[1].channels[region - 8].normalized_value = analog_input / 5.
+			self.DAC[1].channels[region - 8 + 4].normalized_value = analog_input / 5.
