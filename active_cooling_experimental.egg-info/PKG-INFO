@@ -5,5 +5,6 @@ Summary: Project destinated to store code and scheme for experimental setup of t
 Home-page: https://github.com/chaos-polymtl/active_cooling_experimental
 Author: Bruno Blais
 Author-email: bruno.blais@polymtl.ca
+License: BSD-3-Clause
 Classifier: Programming Language :: Python :: 3
 Requires-Python: >=3.8

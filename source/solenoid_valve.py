@@ -23,16 +23,22 @@ class Solenoid:
 
         if test_UI:
             return
-
-        import RPi.GPIO as GPIO
         from source.DRV8806 import DRV8806
 
         self.DRV = DRV8806()
+
+        # Create solenoid mask to follow harware
+        self.solenoid_mask = {0 : 9, 1 : 8, 2 : 5, 3 : 4, 4 : 7, 5 : 6, 6 : 1, 7 : 0, 8 : 3, 9 : 2}
     
     def set_solenoid_state(self, solenoid_id, new_state: bool):
+
+        solenoid_id = self.solenoid_mask[solenoid_id]
         
         byte_index = solenoid_id // 8
         bit_in_byte = solenoid_id % 8
+
+        while byte_index >= len(self.state):
+            self.state.append(0b00000000)
 
         if new_state == True:
             self.state[byte_index] |= (1 << bit_in_byte)
@@ -40,5 +46,10 @@ class Solenoid:
         elif new_state == False:
             self.state[byte_index] &= ~(1 << bit_in_byte)
 
-        self.DRV.spi.writebytes(self.state)
+        self.update_solenoids()
+
+    def update_solenoids(self):
+        if self.test_UI:
+            return
+        self.DRV.spi.xfer2(self.state[::-1])
 

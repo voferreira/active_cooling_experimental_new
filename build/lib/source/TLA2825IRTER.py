@@ -27,7 +27,7 @@ class TLA2528:
 
         self.bus = SMBus(1)
         self.address = address
-        self.AVDD = 5.546
+        self.AVDD = 5.55
         self.data = np.zeros(8)
 
         # Configure all pins as analog inputs

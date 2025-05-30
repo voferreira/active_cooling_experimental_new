@@ -42,5 +42,6 @@ setup(
     classifiers=[
         "Programming Language :: Python :: 3",
     ],
-    python_requires='>=3.8'
+    python_requires='>=3.8',
+    license="BSD-3-Clause",  # License for the project
 )

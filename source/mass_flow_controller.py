@@ -25,7 +25,7 @@ class MFC():
 		if test_UI:
 			return
 
-		from source.TLA2825IRTER import TLA2825IRTER
+		from source.TLA2825IRTER import TLA2528
 		from adafruit_dacx578 import DACx578
 		
 		import board
@@ -33,20 +33,22 @@ class MFC():
 
 		i2c = busio.I2C(board.SCL, board.SDA)
 			
-		self.ADC = [TLA2825IRTER(i2c, address=0x12), TLA2825IRTER(i2c, address=0x13)]
+		self.ADC = [TLA2528(address=0x12), TLA2528(address=0x13)]
 		self.ADC_analog = np.zeros(n_region)
 	
-		self.DAC = [DACx578(i2c, address=0x48)]
+		self.DAC = [DACx578(i2c, address=0x48), DACx578(i2c, address=0x47)]
+
+		self.n_region = n_region
+		self.flow_rate = np.zeros(n_region)
 	
 	def get_analog_read(self):
 		if self.test_UI:
 			return
-		for i in range(self.ADC_analog.shape[0]):
-			print(i)
-			if i < 8:
-				self.ADC_analog[i] = self.ADC[0].read(i)
-			else:
-				self.ADC_analog[i] = self.ADC[1].read(i - 8)
+		
+		n_points_ADC0 = min(8, self.n_region)
+		self.ADC_analog[:n_points_ADC0] = self.ADC[0].measure_voltage()
+		if self.n_region > 8:
+			self.ADC_analog[n_points_ADC0:10] = self.ADC[1].measure_voltage()[:2]
 
 	def get_flow_rate(self):
 		if self.test_UI:

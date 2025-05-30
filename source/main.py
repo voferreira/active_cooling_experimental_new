@@ -14,7 +14,7 @@ from source.decouplers import decouplers
 from source.workers import MeasureAndControlWorker
 
 class Application(QMainWindow):
-    def __init__(self, n_region=2, test_UI=False):
+    def __init__(self, n_region=1, test_UI=False):
         super().__init__()
 
         self.n_region = n_region
@@ -70,6 +70,10 @@ class Application(QMainWindow):
         # Zero MFCs flow rate
         for j in range(self.n_region):
             self.MFC.set_flow_rate(j, 0)
+
+        # Zero solenoid state
+        for j in range(self.n_region):
+            self.solenoid.set_solenoid_state(j, False)
 
         # Allow the application to close
         event.accept()

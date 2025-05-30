@@ -43,4 +43,4 @@ class DRV8806:
     def reset_driver(self):
         GPIO.output(self.reset, GPIO.HIGH)
         time.sleep(0.1)
-        GPIO.output(self.reset, GPIO.LOw)
+        GPIO.output(self.reset, GPIO.LOW)
